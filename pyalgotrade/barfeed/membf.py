@@ -62,8 +62,8 @@ class BarFeed(barfeed.BaseBarFeed):
         pass
 
     def addBarsFromSequence(self, instrument, bars):
-        if self.__started:
-            raise Exception("Can't add more bars once you started consuming bars")
+        # if self.__started:
+        #     raise Exception("Can't add more bars once you started consuming bars")
 
         self.__bars.setdefault(instrument, [])
         self.__nextPos.setdefault(instrument, 0)
@@ -108,8 +108,8 @@ class BarFeed(barfeed.BaseBarFeed):
                 ret[instrument] = bars[nextPos]
                 self.__nextPos[instrument] += 1
 
-        if self.__currDateTime == smallestDateTime:
-            raise Exception("Duplicate bars found for %s on %s" % (list(ret.keys()), smallestDateTime))
+        # if self.__currDateTime == smallestDateTime:
+        #     raise Exception("Duplicate bars found for %s on %s" % (list(ret.keys()), smallestDateTime))
 
         self.__currDateTime = smallestDateTime
         return bar.Bars(ret)

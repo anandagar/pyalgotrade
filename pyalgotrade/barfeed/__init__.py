@@ -97,13 +97,13 @@ class BaseBarFeed(feed.BaseFeed):
             dateTime = bars.getDateTime()
 
             # Check that current bar datetimes are greater than the previous one.
-            if self.__currentBars is not None and self.__currentBars.getDateTime() >= dateTime:
-                raise Exception(
-                    "Bar date times are not in order. Previous datetime was %s and current datetime is %s" % (
-                        self.__currentBars.getDateTime(),
-                        dateTime
-                    )
-                )
+            # if self.__currentBars is not None and self.__currentBars.getDateTime() >= dateTime:
+            #     raise Exception(
+            #         "Bar date times are not in order. Previous datetime was %s and current datetime is %s" % (
+            #             self.__currentBars.getDateTime(),
+            #             dateTime
+            #         )
+            #     )
 
             # Update self.__currentBars and self.__lastBars
             self.__currentBars = bars
