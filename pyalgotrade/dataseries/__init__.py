@@ -134,8 +134,8 @@ class SequenceDataSeries(DataSeries):
             If dateTime is not None, it must be greater than the last one.
         """
 
-        # if dateTime is not None and len(self.__dateTimes) != 0 and self.__dateTimes[-1] >= dateTime:
-        #     raise Exception("Invalid datetime. It must be bigger than that last one")
+        if dateTime is not None and len(self.__dateTimes) != 0 and self.__dateTimes[-1] >= dateTime:
+            raise Exception("Invalid datetime. It must be bigger than that last one")
 
         assert(len(self.__values) == len(self.__dateTimes))
         self.__dateTimes.append(dateTime)
