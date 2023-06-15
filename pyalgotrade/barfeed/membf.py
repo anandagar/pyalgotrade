@@ -64,15 +64,18 @@ class BarFeed(barfeed.BaseBarFeed):
     def addBarsFromSequence(self, instrument, bars):
         # if self.__started:
         #     raise Exception("Can't add more bars once you started consuming bars")
-
+        
         self.__bars.setdefault(instrument, [])
         self.__nextPos.setdefault(instrument, 0)
 
         # Add and sort the bars
         self.__bars[instrument].extend(bars)
         self.__bars[instrument].sort(key=lambda b: b.getDateTime())
-
         self.registerInstrument(instrument)
+
+    def deleteBarsFromSequence(self, instrument):
+        # deleting all bars from specific instrument
+        self.__bars[instrument].clear()
 
     def eof(self):
         ret = True
