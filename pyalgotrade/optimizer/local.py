@@ -46,7 +46,7 @@ class ServerThread(threading.Thread):
 def worker_process(strategyClass, port, logLevel):
     class Worker(worker.Worker):
         def runStrategy(self, barFeed, *args, **kwargs):
-            strat = strategyClass(barFeed, *args, **kwargs)
+            strat = strategyClass
             strat.run()
             return strat.getResult()
 
@@ -105,7 +105,7 @@ def run_impl(strategyClass, barFeed, strategyParameters, batchSize, workerCount=
     serverThread.start()
     logger.info("Waiting for the server to be ready")
     srv.waitServing()
-
+    breakpoint()
     try:
         logger.info("Starting %s workers" % workerCount)
         # Build the worker processes.
