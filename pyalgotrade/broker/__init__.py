@@ -137,10 +137,9 @@ class Order(object):
         State.PARTIALLY_FILLED: [State.PARTIALLY_FILLED, State.FILLED, State.CANCELED],
     }
 
-    def __init__(self, type_, action, instrument, quantity, instrumentTraits):
+    def __init__(self, type_, action, instrument, quantity, instrumentTraits, startegyId):
         if quantity is not None and quantity <= 0:
             raise Exception("Invalid quantity")
-
         self.__id = None
         self.__type = type_
         self.__action = action
@@ -155,6 +154,7 @@ class Order(object):
         self.__allOrNone = False
         self.__state = Order.State.INITIAL
         self.__submitDateTime = None
+        self.__strategyId = startegyId
 
     # This is to check that orders are not compared directly. order ids should be compared.
 #    def __eq__(self, other):
@@ -173,6 +173,9 @@ class Order(object):
         assert quantity > 0, "Invalid quantity"
         self.__quantity = quantity
 
+    def getStrategyId(self):
+        return self.__strategyId
+    
     def getInstrumentTraits(self):
         return self.__instrumentTraits
 
@@ -366,8 +369,8 @@ class MarketOrder(Order):
         This is a base class and should not be used directly.
     """
 
-    def __init__(self, action, instrument, quantity, onClose, instrumentTraits):
-        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits)
+    def __init__(self, action, instrument, quantity, onClose, instrumentTraits, startegyId):
+        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits, startegyId)
         self.__onClose = onClose
 
     def getFillOnClose(self):
