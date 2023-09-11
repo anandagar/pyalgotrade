@@ -42,6 +42,14 @@ class TimeRange(object):
 
 
 class IntraDayRange(TimeRange):
+    '''
+    Understanding : This function will create a slot according to the timeframe that you have passed 
+    for the resampling 
+    Like : 
+    ResampleTimeFrame : 5 min 
+    Then self.__begin will be : 9.15 and self.__end will be : 9.20 in the next iteration self.__begin will 
+    be  9.20 and self.__end will be 9.25.
+    '''
     def __init__(self, dateTime, frequency):
         super(IntraDayRange, self).__init__()
         assert isinstance(frequency, int)
