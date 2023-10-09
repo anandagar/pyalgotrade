@@ -203,3 +203,8 @@ class Trades(stratanalyzer.StrategyAnalyzer):
     def getCommissionsForEvenTrades(self):
         """Returns a numpy.array with the commissions for each trade whose net profit was 0."""
         return np.asarray(self.__evenCommissions)
+    
+    def orderEvent(self, orderEvent):
+        '''
+        '''
+        self.__onOrderEvent(None, orderEvent)
