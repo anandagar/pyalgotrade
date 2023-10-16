@@ -75,7 +75,7 @@ class Trades(stratanalyzer.StrategyAnalyzer):
         self.__all.append(netProfit)
         self.__allReturns.append(netReturn)
         self.__allCommissions.append(posTracker.getCommissions())
-        self.__intrumentanalytics.append({ 'instrument': order.getInstrument(), 'pnl': netProfit, 'returns': netReturn})
+        self.__intrumentanalytics.append({'datetime': order.getSubmitDateTime(), 'instrument': order.getInstrument(), 'pnl': netProfit, 'returns': netReturn})
 
         posTracker.reset()
 
