@@ -420,10 +420,10 @@ class Position(object):
 
 # This class is reponsible for order management in long positions.
 class LongPosition(Position):
-    def __init__(self, strategy, instrument, stopPrice, limitPrice, quantity, goodTillCanceled, allOrNone):
+    def __init__(self, strategy, instrument, stopPrice, limitPrice, quantity, goodTillCanceled, allOrNone, strategyId):
 
         if limitPrice is None and stopPrice is None:
-            entryOrder = strategy.getBroker().createMarketOrder(broker.Order.Action.BUY, instrument, quantity, True)
+            entryOrder = strategy.getBroker().createMarketOrder(broker.Order.Action.BUY, instrument, quantity, True, strategyId)
         elif limitPrice is not None and stopPrice is None:
             entryOrder = strategy.getBroker().createLimitOrder(broker.Order.Action.BUY, instrument, limitPrice, quantity)
         elif limitPrice is None and stopPrice is not None:
@@ -437,9 +437,10 @@ class LongPosition(Position):
 
     def buildExitOrder(self, stopPrice, limitPrice):
         quantity = self.getShares()
+        strategyId = self.getStrategy().getStrategyId()
         assert(quantity > 0)
         if limitPrice is None and stopPrice is None:
-            ret = self.getStrategy().getBroker().createMarketOrder(broker.Order.Action.SELL, self.getInstrument(), quantity, True)
+            ret = self.getStrategy().getBroker().createMarketOrder(broker.Order.Action.SELL, self.getInstrument(), quantity, True, strategyId)
         elif limitPrice is not None and stopPrice is None:
             ret = self.getStrategy().getBroker().createLimitOrder(broker.Order.Action.SELL, self.getInstrument(), limitPrice, quantity)
         elif limitPrice is None and stopPrice is not None:
