@@ -19,6 +19,7 @@
 """
 
 import abc
+from uuid import uuid4
 
 import six
 
@@ -155,6 +156,8 @@ class Order(object):
         self.__state = Order.State.INITIAL
         self.__submitDateTime = None
         self.__strategyId = startegyId
+        self.__uuid = None
+        self.generate_unique_id()
 
     # This is to check that orders are not compared directly. order ids should be compared.
 #    def __eq__(self, other):
@@ -167,6 +170,18 @@ class Order(object):
 #        if other is None:
 #            return True
 #        assert(False)
+
+    def generate_unique_id(self):
+        '''
+        '''
+        assert self
+        self.__uuid = uuid4().hex
+
+    def getUniqueId(self):
+        '''
+        '''
+        assert self.__uuid is not None
+        return self.__uuid
 
     def _setQuantity(self, quantity):
         assert self.__quantity is None, "Can only change the quantity if it was undefined"
