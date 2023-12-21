@@ -498,9 +498,8 @@ class BaseStrategy(object):
 
     def __onBars(self, dateTime, bars):
         # THE ORDER HERE IS VERY IMPORTANT
-
         # 1: Let analyzers process bars.
-        # self.__notifyAnalyzers(lambda s: s.beforeOnBars(self, bars))
+        self.__notifyAnalyzers(lambda s: s.beforeOnBars(self, bars))
 
         # 2: Let the strategy process current bars and submit orders.
         self.onBars(bars)
