@@ -105,6 +105,7 @@ class BaseFeed(observer.Subject):
     def dispatch(self):
         dateTime, values = self.getNextValuesAndUpdateDS()
         if dateTime is not None:
+            print(f"datetime is {dateTime} and bartime is {values.getDateTime()}")
             self.__event.emit(dateTime, values)
         return dateTime is not None
 
