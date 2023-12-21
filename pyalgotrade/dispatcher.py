@@ -88,6 +88,8 @@ class Dispatcher(object):
             if not subject.eof():
                 eof = False
                 smallestDateTime = utils.safe_min(smallestDateTime, subject.peekDateTime())
+                from datetime import datetime, timedelta
+                print(f"datetime is {datetime.now()} and current time is {datetime.now() - timedelta(hours=5, minutes=30)}")
 
         # Dispatch realtime subjects and those subjects with the lowest datetime.
         if not eof:
