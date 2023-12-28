@@ -138,7 +138,7 @@ class Order(object):
         State.PARTIALLY_FILLED: [State.PARTIALLY_FILLED, State.FILLED, State.CANCELED],
     }
 
-    def __init__(self, type_, action, instrument, quantity, instrumentTraits, startegyId):
+    def __init__(self, type_, action, instrument, quantity, instrumentTraits, startegyId, orderDirection):
         if quantity is not None and quantity <= 0:
             raise Exception("Invalid quantity")
         self.__id = None
@@ -158,6 +158,7 @@ class Order(object):
         self.__strategyId = startegyId
         self.__uuid = None
         self.generate_unique_id()
+        self.__order_direction = orderDirection
 
     # This is to check that orders are not compared directly. order ids should be compared.
 #    def __eq__(self, other):
@@ -182,6 +183,12 @@ class Order(object):
         '''
         assert self.__uuid is not None
         return self.__uuid
+    
+    def getOrderDirection(self):
+        '''
+        returns the position state whether entry or exit.
+        '''
+        return self.__order_direction
 
     def _setQuantity(self, quantity):
         assert self.__quantity is None, "Can only change the quantity if it was undefined"
@@ -384,8 +391,8 @@ class MarketOrder(Order):
         This is a base class and should not be used directly.
     """
 
-    def __init__(self, action, instrument, quantity, onClose, instrumentTraits, startegyId):
-        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits, startegyId)
+    def __init__(self, action, instrument, quantity, onClose, instrumentTraits, startegyId, order_direction):
+        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits, startegyId, order_direction)
         self.__onClose = onClose
 
     def getFillOnClose(self):
