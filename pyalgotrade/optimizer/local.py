@@ -105,7 +105,7 @@ def run_impl(strategyClass, barFeed, strategyParameters, batchSize, workerCount=
     serverThread.start()
     logger.info("Waiting for the server to be ready")
     srv.waitServing()
-    breakpoint()
+
     try:
         logger.info("Starting %s workers" % workerCount)
         # Build the worker processes.

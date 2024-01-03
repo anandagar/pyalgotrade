@@ -125,7 +125,7 @@ class Worker(object):
 def worker_process(strategyClass, address, port, workerName):
     class MyWorker(Worker):
         def runStrategy(self, barFeed, *args, **kwargs):
-            strat = strategyClass(barFeed, *args, **kwargs)
+            strat = strategyClass
             strat.run()
             return strat.getResult()
 
@@ -134,7 +134,7 @@ def worker_process(strategyClass, address, port, workerName):
     w.run()
 
 
-def run(strategyClass, address, port, workerCount=None, workerName=None):
+def run(strategy_list, address, port, workerCount=None, workerName=None):
     """Executes one or more worker processes that will run a strategy with the bars and parameters supplied by the server.
 
     :param strategyClass: The strategy class.
@@ -154,7 +154,7 @@ def run(strategyClass, address, port, workerCount=None, workerName=None):
 
     workers = []
     # Build the worker processes.
-    for i in range(workerCount):
+    for strategyClass in strategy_list:
         workers.append(multiprocessing.Process(target=worker_process, args=(strategyClass, address, port, workerName)))
 
     # Start workers
