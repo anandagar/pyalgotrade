@@ -417,6 +417,16 @@ class Position(object):
             ret = last - self.__entryDateTime
         return ret
 
+    def getPosTracker(self):
+        '''
+        '''
+        return self.__posTracker
+    
+    def getEntryPrice(self):
+        '''
+        returns the entryprice of the position.
+        '''
+        return self.__posTracker.getAvgPrice()
 
 # This class is reponsible for order management in long positions.
 class LongPosition(Position):
