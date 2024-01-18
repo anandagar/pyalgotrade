@@ -94,8 +94,6 @@ class Dispatcher(object):
             self.__currDateTime = smallestDateTime
 
             for subject in self.__subjects:
-                #remove after testing.
-                print(f"subject {subject} smallestdttime {smallestDateTime}")
                 if self.__dispatchSubject(subject, smallestDateTime):
                     eventsDispatched = True
         return eof, eventsDispatched

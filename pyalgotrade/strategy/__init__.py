@@ -502,10 +502,7 @@ class BaseStrategy(object):
         self.__notifyAnalyzers(lambda s: s.beforeOnBars(self, bars))
 
         # 2: Let the strategy process current bars and submit orders.
-        import time
-        start = time.time()
         self.onBars(bars)
-        logging.warning(f" bar consumption time{time.time()-start}")
 
         # 3: Notify that the bars were processed.
         self.__barsProcessedEvent.emit(self, bars)
