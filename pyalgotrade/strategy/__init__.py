@@ -505,7 +505,7 @@ class BaseStrategy(object):
         import time
         start = time.time()
         self.onBars(bars)
-        logging.warning(time.time()-start)
+        logging.warning(f" bar consumption time{time.time()-start}")
 
         # 3: Notify that the bars were processed.
         self.__barsProcessedEvent.emit(self, bars)
