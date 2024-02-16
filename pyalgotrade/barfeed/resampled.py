@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+import logging
 from pyalgotrade import barfeed
 from pyalgotrade.dataseries import resampled
 from pyalgotrade import resamplebase
@@ -52,6 +52,7 @@ class BarsGrouper(resamplebase.Grouper):
 class ResampledBarFeed(barfeed.BaseBarFeed):
 
     def __init__(self, barFeed, frequency, maxLen=None):
+        logging.warning(f"resampling freq is {frequency}")
         super(ResampledBarFeed, self).__init__(frequency, maxLen)
 
         if not isinstance(barFeed, barfeed.BaseBarFeed):
@@ -76,6 +77,7 @@ class ResampledBarFeed(barfeed.BaseBarFeed):
             self.__range = resamplebase.build_range(dateTime, self.getFrequency())
             self.__grouper = BarsGrouper(self.__range.getBeginning(), value, self.getFrequency())
         elif self.__range.belongs(dateTime):
+            logging.warning(f"self.__range beginning {self.__range.getBeginning()} ending {self.__range.getEnding()}")
             self.__grouper.addValue(value)
         else:
             self.__values.append(self.__grouper.getGrouped())
