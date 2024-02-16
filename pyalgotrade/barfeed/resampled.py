@@ -77,7 +77,7 @@ class ResampledBarFeed(barfeed.BaseBarFeed):
             self.__range = resamplebase.build_range(dateTime, self.getFrequency())
             self.__grouper = BarsGrouper(self.__range.getBeginning(), value, self.getFrequency())
         elif self.__range.belongs(dateTime):
-            logging.warning(f"self.__range beginning {self.__range.getBeginning()} ending {self.__range.getEnding()}")
+            logging.warning(f"self.__range  arg datetime is {dateTime} begin{self.__range.getBeginning()} end {self.__range.getEnding()}")
             self.__grouper.addValue(value)
         else:
             self.__values.append(self.__grouper.getGrouped())
