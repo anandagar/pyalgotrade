@@ -17,6 +17,7 @@
 """
 .. moduleauthor:: Gabriel Martin Becedillas Ruiz <gabriel.becedillas@gmail.com>
 """
+import logging
 
 from pyalgotrade import utils
 from pyalgotrade import observer
@@ -47,6 +48,7 @@ class Dispatcher(object):
 
     def getSubjects(self):
         return self.__subjects
+
 
     def addSubject(self, subject):
         # Skip the subject if it was already added.
@@ -88,11 +90,12 @@ class Dispatcher(object):
             if not subject.eof():
                 eof = False
                 smallestDateTime = utils.safe_min(smallestDateTime, subject.peekDateTime())
+                if smallestDateTime is not None:
+                    logging.debug(f"{smallestDateTime} and subject is {subject}")
 
         # Dispatch realtime subjects and those subjects with the lowest datetime.
         if not eof:
             self.__currDateTime = smallestDateTime
-
             for subject in self.__subjects:
                 if self.__dispatchSubject(subject, smallestDateTime):
                     eventsDispatched = True
