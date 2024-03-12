@@ -329,6 +329,7 @@ class DefaultStrategy(FillStrategy):
             return None
 
         # Unless its a fill-on-close order, use the open price.
+        #assert order.getSubmitDateTime() == bar.getDateTime(), "order date-time is not in sync with bar" 
         if order.getFillOnClose():
             price = bar.getClose(broker_.getUseAdjustedValues())
         else:

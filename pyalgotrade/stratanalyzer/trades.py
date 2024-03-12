@@ -52,8 +52,9 @@ class Trades(stratanalyzer.StrategyAnalyzer):
         self.__evenCommissions = []
         self.__evenTrades = 0
         self.__posTrackers = {}
+        self.__intrumentanalytics = self.getInstrumentAnalytics()
 
-    def __updateTrades(self, posTracker):
+    def __updateTrades(self, posTracker, order):
         price = 0  # The price doesn't matter since the position should be closed.
         assert posTracker.getPosition() == 0
         netProfit = posTracker.getPnL(price)
@@ -74,10 +75,11 @@ class Trades(stratanalyzer.StrategyAnalyzer):
         self.__all.append(netProfit)
         self.__allReturns.append(netReturn)
         self.__allCommissions.append(posTracker.getCommissions())
+        self.__intrumentanalytics.append({'datetime': order.getSubmitDateTime(), 'instrument': order.getInstrument(), 'pnl': netProfit, 'returns': netReturn})
 
         posTracker.reset()
 
-    def __updatePosTracker(self, posTracker, price, commission, quantity):
+    def __updatePosTracker(self, posTracker, price, commission, quantity, order):
         currentShares = posTracker.getPosition()
 
         if currentShares > 0:  # Current position is long
@@ -87,13 +89,13 @@ class Trades(stratanalyzer.StrategyAnalyzer):
                 newShares = currentShares + quantity
                 if newShares == 0:  # Exit long.
                     posTracker.sell(currentShares, price, commission)
-                    self.__updateTrades(posTracker)
+                    self.__updateTrades(posTracker, order)
                 elif newShares > 0:  # Sell some shares.
                     posTracker.sell(quantity*-1, price, commission)
                 else:  # Exit long and enter short. Use proportional commissions.
                     proportionalCommission = commission * currentShares / float(quantity*-1)
                     posTracker.sell(currentShares, price, proportionalCommission)
-                    self.__updateTrades(posTracker)
+                    self.__updateTrades(posTracker, order)
                     proportionalCommission = commission * newShares / float(quantity)
                     posTracker.sell(newShares*-1, price, proportionalCommission)
         elif currentShares < 0:  # Current position is short
@@ -103,13 +105,13 @@ class Trades(stratanalyzer.StrategyAnalyzer):
                 newShares = currentShares + quantity
                 if newShares == 0:  # Exit short.
                     posTracker.buy(currentShares*-1, price, commission)
-                    self.__updateTrades(posTracker)
+                    self.__updateTrades(posTracker, order)
                 elif newShares < 0:  # Re-buy some shares.
                     posTracker.buy(quantity, price, commission)
                 else:  # Exit short and enter long. Use proportional commissions.
                     proportionalCommission = commission * currentShares * -1 / float(quantity)
                     posTracker.buy(currentShares*-1, price, proportionalCommission)
-                    self.__updateTrades(posTracker)
+                    self.__updateTrades(posTracker, order)
                     proportionalCommission = commission * newShares / float(quantity)
                     posTracker.buy(newShares, price, proportionalCommission)
         elif quantity > 0:
@@ -143,7 +145,7 @@ class Trades(stratanalyzer.StrategyAnalyzer):
         else:  # Unknown action
             assert(False)
 
-        self.__updatePosTracker(posTracker, price, commission, quantity)
+        self.__updatePosTracker(posTracker, price, commission, quantity, order)
 
     def attached(self, strat):
         strat.getBroker().getOrderUpdatedEvent().subscribe(self.__onOrderEvent)
@@ -203,3 +205,8 @@ class Trades(stratanalyzer.StrategyAnalyzer):
     def getCommissionsForEvenTrades(self):
         """Returns a numpy.array with the commissions for each trade whose net profit was 0."""
         return np.asarray(self.__evenCommissions)
+    
+    def orderEvent(self, orderEvent):
+        '''
+        '''
+        self.__onOrderEvent(None, orderEvent)

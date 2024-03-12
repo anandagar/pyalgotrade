@@ -27,6 +27,12 @@ class StrategyAnalyzer(object):
         This is a base class and should not be used directly.
     """
 
+    def __init__(self):
+        self.__intrumentanalytics = []
+
+    def getInstrumentAnalytics(self):
+        return self.__intrumentanalytics
+
     def beforeAttach(self, strat):
         pass
 

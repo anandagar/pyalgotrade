@@ -114,12 +114,12 @@ class BacktestingOrder(object):
 
 
 class MarketOrder(broker.MarketOrder, BacktestingOrder):
-    def __init__(self, action, instrument, quantity, onClose, instrumentTraits):
-        super(MarketOrder, self).__init__(action, instrument, quantity, onClose, instrumentTraits)
+    def __init__(self, action, instrument, quantity, onClose, instrumentTraits, startegyId, order_direction):
+        super(MarketOrder, self).__init__(action, instrument, quantity, onClose, instrumentTraits, startegyId, order_direction)
+        self._uuid = None
 
     def process(self, broker_, bar_):
         return broker_.getFillStrategy().fillMarketOrder(broker_, self, bar_)
-
 
 class LimitOrder(broker.LimitOrder, BacktestingOrder):
     def __init__(self, action, instrument, limitPrice, quantity, instrumentTraits):

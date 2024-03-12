@@ -19,6 +19,7 @@
 """
 
 import abc
+from uuid import uuid4
 
 import six
 
@@ -137,10 +138,9 @@ class Order(object):
         State.PARTIALLY_FILLED: [State.PARTIALLY_FILLED, State.FILLED, State.CANCELED],
     }
 
-    def __init__(self, type_, action, instrument, quantity, instrumentTraits):
+    def __init__(self, type_, action, instrument, quantity, instrumentTraits, startegyId, orderDirection):
         if quantity is not None and quantity <= 0:
             raise Exception("Invalid quantity")
-
         self.__id = None
         self.__type = type_
         self.__action = action
@@ -155,6 +155,10 @@ class Order(object):
         self.__allOrNone = False
         self.__state = Order.State.INITIAL
         self.__submitDateTime = None
+        self.__strategyId = startegyId
+        self.__uuid = None
+        self.generate_unique_id()
+        self.__order_direction = orderDirection
 
     # This is to check that orders are not compared directly. order ids should be compared.
 #    def __eq__(self, other):
@@ -168,11 +172,32 @@ class Order(object):
 #            return True
 #        assert(False)
 
+    def generate_unique_id(self):
+        '''
+        '''
+        assert self
+        self.__uuid = uuid4().hex
+
+    def getUniqueId(self):
+        '''
+        '''
+        assert self.__uuid is not None
+        return self.__uuid
+    
+    def getOrderDirection(self):
+        '''
+        returns the position state whether entry or exit.
+        '''
+        return self.__order_direction
+
     def _setQuantity(self, quantity):
         assert self.__quantity is None, "Can only change the quantity if it was undefined"
         assert quantity > 0, "Invalid quantity"
         self.__quantity = quantity
 
+    def getStrategyId(self):
+        return self.__strategyId
+    
     def getInstrumentTraits(self):
         return self.__instrumentTraits
 
@@ -366,8 +391,8 @@ class MarketOrder(Order):
         This is a base class and should not be used directly.
     """
 
-    def __init__(self, action, instrument, quantity, onClose, instrumentTraits):
-        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits)
+    def __init__(self, action, instrument, quantity, onClose, instrumentTraits, startegyId, order_direction):
+        super(MarketOrder, self).__init__(Order.Type.MARKET, action, instrument, quantity, instrumentTraits, startegyId, order_direction)
         self.__onClose = onClose
 
     def getFillOnClose(self):

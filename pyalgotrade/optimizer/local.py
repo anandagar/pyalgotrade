@@ -46,7 +46,7 @@ class ServerThread(threading.Thread):
 def worker_process(strategyClass, port, logLevel):
     class Worker(worker.Worker):
         def runStrategy(self, barFeed, *args, **kwargs):
-            strat = strategyClass(barFeed, *args, **kwargs)
+            strat = strategyClass
             strat.run()
             return strat.getResult()
 

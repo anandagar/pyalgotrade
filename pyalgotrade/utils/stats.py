@@ -25,6 +25,7 @@ def mean(values):
     ret = None
     if len(values):
         ret = numpy.array(values).mean()
+        ret = numpy.nan_to_num(ret, nan=0.0)
     return ret
 
 
@@ -32,4 +33,5 @@ def stddev(values, ddof=1):
     ret = None
     if len(values):
         ret = numpy.array(values).std(ddof=ddof)
+        ret = numpy.nan_to_num(ret, nan=0.0)
     return ret
