@@ -17,7 +17,7 @@
 """
 .. moduleauthor:: Gabriel Martin Becedillas Ruiz <gabriel.becedillas@gmail.com>
 """
-
+import logging
 from pyalgotrade import utils
 from pyalgotrade import observer
 from pyalgotrade import dispatchprio
@@ -69,6 +69,8 @@ class Dispatcher(object):
 
     # Return True if events were dispatched.
     def __dispatchSubject(self, subject, currEventDateTime):
+        if currEventDateTime is not None:
+            logging.warning(f" Subject : {subject} --------- PeekDatetime : {subject.peekDateTime()} -------- currEventDateTime : {currEventDateTime}")
         ret = False
         # Dispatch if the datetime is currEventDateTime of if its a realtime subject.
         if not subject.eof() and subject.peekDateTime() in (None, currEventDateTime):
