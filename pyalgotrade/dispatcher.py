@@ -70,7 +70,8 @@ class Dispatcher(object):
 
     # Return True if events were dispatched.
     def __dispatchSubject(self, subject, currEventDateTime):
-        
+        ret = False
+
         # Dispatch if the datetime is currEventDateTime of if its a realtime subject.
         if not subject.eof() and subject.peekDateTime() in (None, currEventDateTime):
             ret = subject.dispatch() is True

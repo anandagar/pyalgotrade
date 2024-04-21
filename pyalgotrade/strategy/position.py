@@ -481,7 +481,7 @@ class ShortPosition(Position):
 
     def buildExitOrder(self, stopPrice, limitPrice):
         quantity = self.getShares() * -1
-        strategyId = self.getStrategy().getStrategyId()
+        strategyId = self.getStrategy().strategyId
         assert(quantity > 0)
         if limitPrice is None and stopPrice is None:
             ret = self.getStrategy().getBroker().createMarketOrder(broker.Order.Action.BUY_TO_COVER, self.getInstrument(), quantity, True, strategyId, order_direction = "EXIT")

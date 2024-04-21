@@ -287,7 +287,7 @@ class BaseStrategy(object):
         :type allOrNone: boolean.
         :rtype: The :class:`pyalgotrade.strategy.position.Position` entered.
         """
-        instrument = instrument.getInstrumentName()
+        instrument = instrument.instrumentName
         return pyalgotrade.strategy.position.ShortPosition(self, instrument, None, None, quantity, goodTillCanceled, allOrNone, startegyId)
 
     def enterLongLimit(self, instrument, limitPrice, quantity, goodTillCanceled=False, allOrNone=False):
