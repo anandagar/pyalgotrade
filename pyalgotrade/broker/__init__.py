@@ -356,6 +356,11 @@ class Order(object):
             assert(not self.__allOrNone)
             self.switchState(Order.State.PARTIALLY_FILLED)
 
+    def setPrice(self, price):
+        '''
+        '''
+        self.__avgFillPrice = price
+
     def switchState(self, newState):
         validTransitions = Order.VALID_TRANSITIONS.get(self.__state, [])
         if newState not in validTransitions:
