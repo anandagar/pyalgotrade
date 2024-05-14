@@ -23,6 +23,8 @@ import logging
 
 import six
 
+import time
+
 import pyalgotrade.broker
 from pyalgotrade.broker import backtesting
 from pyalgotrade import observer
@@ -46,6 +48,7 @@ class BaseStrategy(object):
     """
 
     LOGGER_NAME = "strategy"
+    ON_IDLE_SLEEP_TIME = 0.1 # in seconds
 
     def __init__(self, barFeed, broker):
         self.__barFeed = barFeed
@@ -455,7 +458,9 @@ class BaseStrategy(object):
        .. note::
             In a pure backtesting scenario this will not be called.
         """
-        pass
+        #sleep is added here because of 100% cpu utilisation even when the strategy is idle.
+        #without sleep it creates unneccesary burden on the resources.
+        time.sleep(self.ON_IDLE_SLEEP_TIME)        
 
     @abc.abstractmethod
     def onBars(self, bars):
