@@ -48,7 +48,7 @@ class BaseStrategy(object):
     """
 
     LOGGER_NAME = "strategy"
-    ON_IDLE_SLEEP_TIME = 0.1 # in seconds
+    ON_IDLE_SLEEP_TIME = 0.3 # in seconds
 
     def __init__(self, barFeed, broker):
         self.__barFeed = barFeed
