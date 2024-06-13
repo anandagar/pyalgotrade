@@ -513,6 +513,8 @@ class BaseStrategy(object):
         # 3: Notify that the bars were processed.
         self.__barsProcessedEvent.emit(self, bars)
 
+        self.__notifyAnalyzers(lambda s: s.afterOnBars(self, bars) if hasattr(s, 'afterOnBars') and callable(getattr(s, 'afterOnBars')) else None)
+
     def run(self):
         """Call once (**and only once**) to run the strategy."""
         self.__dispatcher.run()
