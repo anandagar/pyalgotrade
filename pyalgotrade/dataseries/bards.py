@@ -61,7 +61,6 @@ class BarDataSeries(dataseries.SequenceDataSeries):
         assert(bar is not None)
         bar.setUseAdjustedValue(self.__useAdjustedValues)
 
-        super(BarDataSeries, self).appendWithDateTime(dateTime, bar)
 
         self.__openDS.appendWithDateTime(dateTime, bar.getOpen())
         self.__closeDS.appendWithDateTime(dateTime, bar.getClose())
@@ -69,6 +68,8 @@ class BarDataSeries(dataseries.SequenceDataSeries):
         self.__lowDS.appendWithDateTime(dateTime, bar.getLow())
         self.__volumeDS.appendWithDateTime(dateTime, bar.getVolume())
         self.__adjCloseDS.appendWithDateTime(dateTime, bar.getAdjClose())
+        
+        super(BarDataSeries, self).appendWithDateTime(dateTime, bar)
 
         # Process extra columns.
         for name, value in six.iteritems(bar.getExtraColumns()):
