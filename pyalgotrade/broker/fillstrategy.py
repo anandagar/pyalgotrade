@@ -229,7 +229,7 @@ class DefaultStrategy(FillStrategy):
         * If using trade bars, then all the volume from that bar can be used.
     """
 
-    def __init__(self, volumeLimit=1):
+    def __init__(self, volumeLimit=None):
         super(DefaultStrategy, self).__init__()
         self.__volumeLeft = {}
         self.__volumeUsed = {}
